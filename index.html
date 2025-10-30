@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Player Scoreboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="scoreboard">
+        <div class="player" id="player1">
+            <div class="player-header">
+                <div class="flag-selector-container">
+                    <button class="flag-button" id="flag1" data-player="player1">🌐</button>
+                    <div class="flag-dropdown" id="flagDropdown1">
+                        <div class="search-container">
+                            <input type="text" class="flag-search" placeholder="Search flags...">
+                        </div>
+                        <div class="flag-options" id="flagOptions1"></div>
+                    </div>
+                </div>
+                <h2><span class="player-name" contenteditable="true">Player 1</span></h2>
+            </div>
+            <div class="score-container">
+                <button class="btn minus" onclick="updateScore('player1', -1)">-</button>
+                <span class="score" id="score1">0</span>
+                <button class="btn plus" onclick="updateScore('player1', 1)">+</button>
+            </div>
+        </div>
+        
+        <div class="player" id="player2">
+            <div class="player-header">
+                <div class="flag-selector-container">
+                    <button class="flag-button" id="flag2" data-player="player2">🌐</button>
+                    <div class="flag-dropdown" id="flagDropdown2">
+                        <div class="search-container">
+                            <input type="text" class="flag-search" placeholder="Search flags...">
+                        </div>
+                        <div class="flag-options" id="flagOptions2"></div>
+                    </div>
+                </div>
+                <h2><span class="player-name" contenteditable="true">Player 2</span></h2>
+            </div>
+            <div class="score-container">
+                <button class="btn minus" onclick="updateScore('player2', -1)">-</button>
+                <span class="score" id="score2">0</span>
+                <button class="btn plus" onclick="updateScore('player2', 1)">+</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="btn reset" onclick="resetScores()">Reset Scores</button>
+    </div>
+
+    <div id="flag-templates" style="display: none;">
+        <div class="flag-option" data-flag="{{flag}}" title="{{name}}">{{flag}}</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
