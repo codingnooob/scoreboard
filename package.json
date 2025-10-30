@@ -1,0 +1,15 @@
+{
+  "name": "scoreboard",
+  "version": "1.0.0",
+  "description": "Two-Player Scoreboard with Country Flags",
+  "main": "script.js",
+  "dependencies": {
+    "country-flag-emoji-json": "^1.0.2"
+  },
+  "scripts": {
+    "build": "browserify script.js -o bundle.js"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0"
+  }
+}
