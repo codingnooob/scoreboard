@@ -44,6 +44,36 @@ body {
     isolation: auto;
 }
 
+/* Remove Player Button */
+.btn-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.btn-remove:hover {
+    background: #e05a5a;
+    transform: scale(1.1);
+}
+
+.btn-remove:active {
+    transform: scale(0.95);
+}
+
 .player:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -256,6 +286,23 @@ body {
 
 .btn.reset:hover {
     background: #e68a00;
+}
+
+/* Add Player Button */
+.btn-add-player {
+    background: #4caf50;
+    padding: 15px 30px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.btn-add-player:hover {
+    background: #3d8b40;
 }
 
 /* Responsive Design */
