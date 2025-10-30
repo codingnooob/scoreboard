@@ -73,6 +73,11 @@ body {
     transform: scale(1.05);
 }
 
+/* Prevent pointer events on the dropdown when it's hidden */
+.flag-dropdown:not([style*='display: block']) {
+    pointer-events: none;
+}
+
 .flag-dropdown {
     display: none;
     position: absolute;
@@ -81,12 +86,13 @@ body {
     background: white;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 10px;
+    padding: 5px;
     width: 200px;
     max-height: 300px;
     overflow-y: auto;
     z-index: 1000;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    pointer-events: auto; /* Prevent flickering by allowing pointer events */
 }
 
 .flag-dropdown.show {
@@ -106,22 +112,32 @@ body {
 }
 
 .flag-options {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .flag-option {
-    font-size: 20px;
-    padding: 5px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    padding: 6px 8px;
     cursor: pointer;
     border-radius: 4px;
     transition: background 0.2s ease;
+    line-height: 1.2;
 }
 
 .flag-option:hover {
     background: #f0f0f0;
+}
+
+.flag-option span {
+    margin-left: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .player-name {
