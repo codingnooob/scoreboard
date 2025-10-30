@@ -109,6 +109,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                 
                 // Toggle this dropdown if it wasn't open
                 if (!isOpen) {
+                    // Position the dropdown relative to the flag button
+                    const rect = flagButton.getBoundingClientRect();
+                    flagDropdown.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+                    flagDropdown.style.left = (rect.left + window.scrollX) + 'px';
                     flagDropdown.style.display = 'block';
                     searchInput.focus();
                 }

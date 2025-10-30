@@ -13,6 +13,8 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    position: relative; /* Create a stacking context */
+    z-index: 0; /* Reset stacking context */
 }
 
 /* Scoreboard Container */
@@ -26,6 +28,8 @@ body {
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     padding: 30px;
+    position: relative;
+    z-index: 1; /* Ensure scoreboard is above body */
 }
 
 /* Player Containers */
@@ -36,7 +40,7 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    /* Remove z-index from player to prevent stacking context issues */
+    z-index: 1; /* Create a stacking context for each player */
 }
 
 .player:hover {
@@ -54,7 +58,7 @@ body {
 .flag-selector-container {
     position: relative;
     margin-right: 15px;
-    /* Remove z-index to prevent stacking context issues */
+    z-index: 100; /* Higher than player cards */
 }
 
 .flag-button {
@@ -83,9 +87,9 @@ body {
 
 .flag-dropdown {
     display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
+    position: fixed; /* Changed from absolute to fixed */
+    top: auto;
+    left: auto;
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -93,15 +97,14 @@ body {
     width: 200px;
     max-height: 300px;
     overflow-y: auto;
-    z-index: 2000; /* Higher than player cards */
+    z-index: 9999; /* Very high z-index to ensure it's on top */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     pointer-events: auto;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     opacity: 1;
     transform: translateZ(0);
     will-change: transform, opacity;
     contain: layout paint;
+    margin-top: 5px; /* Add some space between button and dropdown */
 }
 
 .flag-dropdown.show {
