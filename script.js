@@ -104,16 +104,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                 
                 // Close all dropdowns first
                 document.querySelectorAll('.flag-dropdown').forEach(dd => {
-                    dd.style.display = 'none';
+                    if (dd !== flagDropdown) dd.style.display = 'none';
                 });
                 
                 // Toggle this dropdown if it wasn't open
+                flagDropdown.style.display = isOpen ? 'none' : 'block';
+                
                 if (!isOpen) {
-                    // Position the dropdown relative to the flag button
-                    const rect = flagButton.getBoundingClientRect();
-                    flagDropdown.style.top = (rect.bottom + window.scrollY + 5) + 'px';
-                    flagDropdown.style.left = (rect.left + window.scrollX) + 'px';
-                    flagDropdown.style.display = 'block';
                     searchInput.focus();
                 }
             });
