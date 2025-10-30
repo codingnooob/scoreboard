@@ -1,0 +1,248 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Scoreboard Container */
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+/* Player Containers */
+.player {
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.player:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Player Header */
+.player-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.flag-selector-container {
+    position: relative;
+    margin-right: 15px;
+}
+
+.flag-button {
+    background: none;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.flag-button:hover {
+    background: #f8f8f8;
+    transform: scale(1.05);
+}
+
+.flag-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.flag-dropdown.show {
+    display: block;
+}
+
+.search-container {
+    margin-bottom: 10px;
+}
+
+.flag-search {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.flag-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+.flag-option {
+    font-size: 20px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.flag-option:hover {
+    background: #f0f0f0;
+}
+
+.player-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.player-name:focus {
+    background: #f8f8f8;
+    box-shadow: 0 0 0 2px #4a90e2;
+}
+
+/* Score Container */
+.score-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: #357abd;
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn.minus {
+    background: #ff6b6b;
+}
+
+.btn.minus:hover {
+    background: #e05a5a;
+}
+
+.btn.plus {
+    background: #4caf50;
+}
+
+.btn.plus:hover {
+    background: #3d8b40;
+}
+
+.score {
+    font-size: 48px;
+    font-weight: bold;
+    min-width: 80px;
+    text-align: center;
+    color: #333;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn.reset {
+    background: #ff9800;
+    padding: 12px 25px;
+    width: auto;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn.reset:hover {
+    background: #e68a00;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .scoreboard {
+        padding: 15px;
+    }
+    
+    .player {
+        padding: 15px;
+    }
+    
+    .score {
+        font-size: 36px;
+        min-width: 60px;
+    }
+    
+    .btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .player-name {
+        font-size: 20px;
+    }
+    
+    .flag-button {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}
