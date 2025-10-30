@@ -97,22 +97,51 @@ document.addEventListener('DOMContentLoaded', async function() {
             const flagOptions = document.getElementById(`flagOptions${playerNum}`);
             const searchInput = flagDropdown.querySelector('.flag-search');
 
-            // Toggle dropdown
+            // Track if mouse is over dropdown or button
+            let isMouseOverDropdown = false;
+            let isMouseOverButton = false;
+            
+            // Toggle dropdown on button click
             flagButton.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const isOpen = flagDropdown.style.display === 'block';
                 
-                // Close all dropdowns first
+                // Close all other dropdowns first
                 document.querySelectorAll('.flag-dropdown').forEach(dd => {
                     if (dd !== flagDropdown) dd.style.display = 'none';
                 });
                 
-                // Toggle this dropdown if it wasn't open
+                // Toggle this dropdown
                 flagDropdown.style.display = isOpen ? 'none' : 'block';
                 
                 if (!isOpen) {
                     searchInput.focus();
                 }
+            });
+            
+            // Track mouse enter/leave for button
+            flagButton.addEventListener('mouseenter', () => {
+                isMouseOverButton = true;
+            });
+            
+            flagButton.addEventListener('mouseleave', () => {
+                isMouseOverButton = false;
+                // Small delay to allow for movement to dropdown
+                setTimeout(() => {
+                    if (!isMouseOverDropdown) {
+                        flagDropdown.style.display = 'none';
+                    }
+                }, 100);
+            });
+            
+            // Track mouse enter/leave for dropdown
+            flagDropdown.addEventListener('mouseenter', () => {
+                isMouseOverDropdown = true;
+            });
+            
+            flagDropdown.addEventListener('mouseleave', () => {
+                isMouseOverDropdown = false;
+                flagDropdown.style.display = 'none';
             });
 
             // Close dropdown when clicking outside

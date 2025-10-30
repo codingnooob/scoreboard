@@ -37,12 +37,15 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    /* Create a stacking context for the player */
+    isolation: isolate;
 }
 
 .player:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    z-index: 2; /* Ensure hovered player is above others */
+    /* Ensure hovered player is above others but doesn't affect dropdowns */
+    z-index: 2;
 }
 
 /* Player Header */
@@ -56,6 +59,8 @@ body {
     position: relative;
     margin-right: 15px;
     display: inline-block;
+    /* Ensure the container creates a stacking context */
+    z-index: 1;
 }
 
 .flag-button {
@@ -98,9 +103,12 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     pointer-events: auto;
     opacity: 1;
+    /* Ensure the dropdown is in its own stacking context */
     transform: translateZ(0);
     will-change: transform, opacity;
     margin-top: 5px;
+    /* Prevent any potential clipping */
+    transform-style: preserve-3d;
 }
 
 .flag-dropdown.show {
