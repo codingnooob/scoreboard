@@ -89,61 +89,95 @@ document.addEventListener('DOMContentLoaded', async function() {
         setLoading(false);
     }
 
-    // Initialize flag selectors with the provided flags
-    function initializeFlagSelectors(flags) {
-        ['1', '2'].forEach(playerNum => {
-            const flagButton = document.getElementById(`flag${playerNum}`);
-            const flagDropdown = document.getElementById(`flagDropdown${playerNum}`);
-            const flagOptions = document.getElementById(`flagOptions${playerNum}`);
-            const searchInput = flagDropdown.querySelector('.flag-search');
+    // Create dropdown elements in the dropdowns container
+    function createDropdowns() {
+        const dropdownsContainer = document.getElementById('dropdowns-container');
+        
+        // Create dropdown for player 1
+        const dropdown1 = document.createElement('div');
+        dropdown1.className = 'flag-dropdown';
+        dropdown1.id = 'flagDropdown1';
+        dropdown1.innerHTML = `
+            <div class="search-container">
+                <input type="text" class="flag-search" placeholder="Search flags...">
+            </div>
+            <div class="flag-options" id="flagOptions1"></div>
+        `;
+        
+        // Create dropdown for player 2
+        const dropdown2 = document.createElement('div');
+        dropdown2.className = 'flag-dropdown';
+        dropdown2.id = 'flagDropdown2';
+        dropdown2.innerHTML = `
+            <div class="search-container">
+                <input type="text" class="flag-search" placeholder="Search flags...">
+            </div>
+            <div class="flag-options" id="flagOptions2"></div>
+        `;
+        
+        dropdownsContainer.appendChild(dropdown1);
+        dropdownsContainer.appendChild(dropdown2);
+    }
 
+    // Position dropdown relative to button
+    function positionDropdown(button, dropdown) {
+        const buttonRect = button.getBoundingClientRect();
+        dropdown.style.top = `${buttonRect.bottom + window.scrollY}px`;
+        dropdown.style.left = `${buttonRect.left + window.scrollX}px`;
+    }
+
+    // Initialize flag selectors
+    function initializeFlagSelectors(flags) {
+        // Create dropdown elements
+        createDropdowns();
+        
+        // Create dropdowns for each player
+        const players = ['1', '2'];
+        
+        players.forEach(playerId => {
+            const flagButton = document.getElementById(`flag${playerId}`);
+            const dropdown = document.getElementById(`flagDropdown${playerId}`);
+            const flagOptions = document.getElementById(`flagOptions${playerId}`);
+            const flagSearch = dropdown.querySelector('.flag-search');
+            
+            // Create and append flag options
+            flags.forEach(flag => {
+                const flagOption = document.createElement('div');
+                flagOption.className = 'flag-option';
+                flagOption.dataset.flag = flag.code;
+                flagOption.title = flag.name;
+                flagOption.textContent = flag.flag + ' ' + flag.name;
+                flagOption.addEventListener('click', () => {
+                    document.getElementById(`flag${playerId}`).textContent = flag.flag;
+                    document.getElementById(`flagDropdown${playerId}`).classList.remove('show');
+                    // Clear search input when a flag is selected
+                    document.querySelector(`#flagDropdown${playerId} .flag-search`).value = '';
+                });
+                flagOptions.appendChild(flagOption);
+            });
+            
             // Toggle dropdown on button click
             flagButton.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const isOpen = flagDropdown.style.display === 'block';
+                const isOpen = dropdown.classList.contains('show');
                 
-                // Close all other dropdowns first
-                document.querySelectorAll('.flag-dropdown').forEach(dd => {
-                    if (dd !== flagDropdown) dd.style.display = 'none';
+                // Close all other dropdowns
+                document.querySelectorAll('.flag-dropdown.show').forEach(dd => {
+                    if (dd !== dropdown) {
+                        dd.classList.remove('show');
+                    }
                 });
                 
-                // Toggle this dropdown
-                flagDropdown.style.display = isOpen ? 'none' : 'block';
-                
+                // Toggle current dropdown
                 if (!isOpen) {
-                    searchInput.focus();
+                    dropdown.classList.add('show');
+                    positionDropdown(flagButton, dropdown);
+                    flagSearch && flagSearch.focus();
+                } else {
+                    dropdown.classList.remove('show');
                 }
             });
             
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!flagDropdown.contains(e.target) && 
-                    e.target !== flagButton && 
-                    !flagButton.contains(e.target)) {
-                    flagDropdown.style.display = 'none';
-                }
-            });
-            
-            // Close dropdown when a flag is selected
-            flagDropdown.addEventListener('click', (e) => {
-                if (e.target.closest('.flag-option')) {
-                    setTimeout(() => {
-                        flagDropdown.style.display = 'none';
-                    }, 200);
-                }
-            });
-
-            // Close dropdown when clicking outside
-            const handleClickOutside = (e) => {
-                if (!flagDropdown.contains(e.target) && 
-                    e.target !== flagButton && 
-                    !flagButton.contains(e.target)) {
-                    flagDropdown.style.display = 'none';
-                }
-            };
-            
-            // Use capturing phase to ensure this runs before other click handlers
-            document.addEventListener('click', handleClickOutside, true);
             
             // Cleanup event listener when component unmounts (if needed)
             // This would be more important in a framework like React

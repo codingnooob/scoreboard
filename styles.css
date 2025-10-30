@@ -39,6 +39,8 @@ body {
     position: relative;
     /* Create a stacking context for the player */
     z-index: 1;
+    /* Ensure player doesn't create a new stacking context that would contain the dropdown */
+    isolation: auto;
 }
 
 .player:hover {
@@ -59,10 +61,6 @@ body {
     position: relative;
     margin-right: 15px;
     display: inline-block;
-    /* Create a new stacking context for the container */
-    z-index: 1;
-    /* Ensure the container's stacking context is above player cards */
-    position: relative;
 }
 
 .flag-button {
@@ -89,11 +87,14 @@ body {
     pointer-events: none;
 }
 
+#dropdowns-container {
+    position: relative;
+    z-index: 1000;
+}
+
 .flag-dropdown {
     display: none;
-    position: relative;
-    top: 100%;
-    left: 0;
+    position: fixed;
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -101,21 +102,14 @@ body {
     width: 200px;
     max-height: 300px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 10000;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     pointer-events: auto;
     opacity: 1;
-    /* Ensure the dropdown is in its own stacking context */
     transform: translateZ(0);
     will-change: transform, opacity;
-    margin-top: 5px;
-    /* Ensure dropdown stays above all other elements */
-    transform-style: preserve-3d;
-    /* Force hardware acceleration and ensure it stays on top */
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    /* Ensure it's above all player cards */
-    z-index: 10000 !important;
 }
 
 .flag-dropdown.show {

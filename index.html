@@ -12,12 +12,6 @@
             <div class="player-header">
                 <div class="flag-selector-container">
                     <button class="flag-button" id="flag1" data-player="player1">🌐</button>
-                    <div class="flag-dropdown" id="flagDropdown1">
-                        <div class="search-container">
-                            <input type="text" class="flag-search" placeholder="Search flags...">
-                        </div>
-                        <div class="flag-options" id="flagOptions1"></div>
-                    </div>
                 </div>
                 <h2><span class="player-name" contenteditable="true">Player 1</span></h2>
             </div>
@@ -32,12 +26,6 @@
             <div class="player-header">
                 <div class="flag-selector-container">
                     <button class="flag-button" id="flag2" data-player="player2">🌐</button>
-                    <div class="flag-dropdown" id="flagDropdown2">
-                        <div class="search-container">
-                            <input type="text" class="flag-search" placeholder="Search flags...">
-                        </div>
-                        <div class="flag-options" id="flagOptions2"></div>
-                    </div>
                 </div>
                 <h2><span class="player-name" contenteditable="true">Player 2</span></h2>
             </div>
@@ -48,6 +36,9 @@
             </div>
         </div>
     </div>
+    
+    <!-- Dropdowns will be moved here by JavaScript -->
+    <div id="dropdowns-container"></div>
     
     <div class="controls">
         <button class="btn reset" onclick="resetScores()">Reset Scores</button>
