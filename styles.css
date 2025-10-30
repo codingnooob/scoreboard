@@ -13,6 +13,7 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    position: relative;
 }
 
 /* Scoreboard Container */
@@ -88,7 +89,11 @@ body {
 }
 
 #dropdowns-container {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
     z-index: 1000;
 }
 
@@ -98,18 +103,17 @@ body {
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 5px;
-    width: 200px;
-    max-height: 300px;
+    padding: 10px;
+    width: 250px;
+    max-height: 400px;
     overflow-y: auto;
     z-index: 10000;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     pointer-events: auto;
     opacity: 1;
-    transform: translateZ(0);
-    will-change: transform, opacity;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .flag-dropdown.show {
@@ -131,18 +135,23 @@ body {
 .flag-options {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .flag-option {
     display: flex;
     align-items: center;
-    font-size: 16px;
-    padding: 6px 8px;
+    font-size: 14px;
+    padding: 8px 12px;
     cursor: pointer;
     border-radius: 4px;
-    transition: background 0.2s ease;
-    line-height: 1.2;
+    transition: all 0.2s ease;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: auto;
+    user-select: none;
 }
 
 .flag-option:hover {
@@ -233,6 +242,7 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    padding-left: 30px;
 }
 
 .btn.reset {

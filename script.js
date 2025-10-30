@@ -22,15 +22,7 @@ function resetScores() {
 document.addEventListener('DOMContentLoaded', async function() {
     let flags = [];
     
-    // Add a loading state
-    const setLoading = (isLoading) => {
-        document.querySelectorAll('.flag-options').forEach(el => {
-            el.innerHTML = isLoading ? '<div class="loading">Loading countries...</div>' : '';
-        });
-    };
-    
     try {
-        setLoading(true);
         
         // First try: Fetch from CDN
         try {
@@ -85,8 +77,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             { flag: '🇧🇷', name: 'Brazil', code: 'br' }
         ];
         initializeFlagSelectors(flags);
-    } finally {
-        setLoading(false);
     }
 
     // Create dropdown elements in the dropdowns container
@@ -122,12 +112,27 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Position dropdown relative to button
     function positionDropdown(button, dropdown) {
         const buttonRect = button.getBoundingClientRect();
-        dropdown.style.top = `${buttonRect.bottom + window.scrollY}px`;
-        dropdown.style.left = `${buttonRect.left + window.scrollX}px`;
+        
+        // Use fixed positioning coordinates
+        dropdown.style.top = `${buttonRect.bottom + 5}px`;
+        dropdown.style.left = `${buttonRect.left}px`;
+        
+        // Ensure dropdown stays within viewport
+        setTimeout(() => {
+            const dropdownRect = dropdown.getBoundingClientRect();
+            const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+            
+            if (dropdownRect.right > viewportWidth) {
+                dropdown.style.left = 'auto';
+                dropdown.style.right = '20px';
+            }
+        }, 0);
     }
 
     // Initialize flag selectors
     function initializeFlagSelectors(flags) {
+        console.log('Initializing flag selectors with', flags.length, 'flags');
+        
         // Create dropdown elements
         createDropdowns();
         
@@ -140,28 +145,47 @@ document.addEventListener('DOMContentLoaded', async function() {
             const flagOptions = document.getElementById(`flagOptions${playerId}`);
             const flagSearch = dropdown.querySelector('.flag-search');
             
+            // Clear any existing options
+            flagOptions.innerHTML = '';
+            
+            console.log(`Creating ${flags.length} flag options for player ${playerId}`);
+            
             // Create and append flag options
             flags.forEach(flag => {
                 const flagOption = document.createElement('div');
                 flagOption.className = 'flag-option';
                 flagOption.dataset.flag = flag.code;
+                flagOption.dataset.name = flag.name;
                 flagOption.title = flag.name;
-                flagOption.textContent = flag.flag + ' ' + flag.name;
-                flagOption.addEventListener('click', () => {
-                    document.getElementById(`flag${playerId}`).textContent = flag.flag;
-                    document.getElementById(`flagDropdown${playerId}`).classList.remove('show');
-                    // Clear search input when a flag is selected
-                    document.querySelector(`#flagDropdown${playerId} .flag-search`).value = '';
-                });
+                flagOption.textContent = `${flag.flag} ${flag.name}`;
+                flagOption.addEventListener('click', function(e) {
+                    console.log('Click detected on flag option:', flag.name);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    console.log('Setting button to:', flag.flag);
+                    flagButton.textContent = flag.flag;
+                    console.log('Closing dropdown');
+                    dropdown.classList.remove('show');
+                    if (flagSearch) {
+                        flagSearch.value = '';
+                    }
+                    // Show all options again
+                    const allOptions = flagOptions.querySelectorAll('.flag-option');
+                    allOptions.forEach(opt => opt.style.display = '');
+                }, true);
                 flagOptions.appendChild(flagOption);
             });
             
+            console.log(`Added ${flagOptions.children.length} options to flagOptions${playerId}`);
+
             // Toggle dropdown on button click
             flagButton.addEventListener('click', (e) => {
                 e.stopPropagation();
+                e.preventDefault();
+                
                 const isOpen = dropdown.classList.contains('show');
                 
-                // Close all other dropdowns
+                // Close all dropdowns first
                 document.querySelectorAll('.flag-dropdown.show').forEach(dd => {
                     if (dd !== dropdown) {
                         dd.classList.remove('show');
@@ -170,31 +194,58 @@ document.addEventListener('DOMContentLoaded', async function() {
                 
                 // Toggle current dropdown
                 if (!isOpen) {
+                    console.log('Opening dropdown', playerId);
                     dropdown.classList.add('show');
                     positionDropdown(flagButton, dropdown);
-                    flagSearch && flagSearch.focus();
+                    if (flagSearch) {
+                        flagSearch.value = '';
+                        flagSearch.focus();
+                    }
+                    // Show all options when dropdown is opened
+                    const options = flagOptions.querySelectorAll('.flag-option');
+                    console.log('Found', options.length, 'options in dropdown');
+                    options.forEach(option => {
+                        option.style.display = '';
+                    });
                 } else {
+                    console.log('Closing dropdown', playerId);
                     dropdown.classList.remove('show');
                 }
             });
             
-            
-            // Cleanup event listener when component unmounts (if needed)
-            // This would be more important in a framework like React
-            // For vanilla JS, this is a simplified version
-
             // Search functionality
-            searchInput.addEventListener('input', (e) => {
+            flagSearch.addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase();
-                const filteredFlags = flags.filter(flag => 
-                    flag.name.toLowerCase().includes(searchTerm) || 
-                    (flag.code && flag.code.toLowerCase().includes(searchTerm))
-                );
-                renderFlagOptions(filteredFlags, playerNum);
+                const options = flagOptions.querySelectorAll('.flag-option');
+                
+                options.forEach(option => {
+                    const name = option.dataset.name.toLowerCase();
+                    const code = option.dataset.flag.toLowerCase();
+                    if (name.includes(searchTerm) || code.includes(searchTerm)) {
+                        option.style.display = '';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
             });
-
-            // Initial render of flag options
-            renderFlagOptions(flags, playerNum);
+            
+            // Note: Click outside handler is added globally below
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (dropdown.classList.contains('show')) {
+                    positionDropdown(flagButton, dropdown);
+                }
+            });
+        });
+        
+        // Global click outside handler
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.flag-dropdown') && !e.target.closest('.flag-button')) {
+                document.querySelectorAll('.flag-dropdown.show').forEach(dd => {
+                    dd.classList.remove('show');
+                });
+            }
         });
     }
 
