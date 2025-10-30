@@ -100,23 +100,35 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Toggle dropdown
             flagButton.addEventListener('click', (e) => {
                 e.stopPropagation();
-                document.querySelectorAll('.flag-dropdown').forEach(dd => {
-                    if (dd !== flagDropdown) dd.style.display = 'none';
-                });
-                flagDropdown.style.display = flagDropdown.style.display === 'block' ? 'none' : 'block';
+                const isOpen = flagDropdown.style.display === 'block';
                 
-                // Focus search input when dropdown is shown
-                if (flagDropdown.style.display === 'block') {
+                // Close all dropdowns first
+                document.querySelectorAll('.flag-dropdown').forEach(dd => {
+                    dd.style.display = 'none';
+                });
+                
+                // Toggle this dropdown if it wasn't open
+                if (!isOpen) {
+                    flagDropdown.style.display = 'block';
                     searchInput.focus();
                 }
             });
 
             // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!flagDropdown.contains(e.target) && e.target !== flagButton) {
+            const handleClickOutside = (e) => {
+                if (!flagDropdown.contains(e.target) && 
+                    e.target !== flagButton && 
+                    !flagButton.contains(e.target)) {
                     flagDropdown.style.display = 'none';
                 }
-            });
+            };
+            
+            // Use capturing phase to ensure this runs before other click handlers
+            document.addEventListener('click', handleClickOutside, true);
+            
+            // Cleanup event listener when component unmounts (if needed)
+            // This would be more important in a framework like React
+            // For vanilla JS, this is a simplified version
 
             // Search functionality
             searchInput.addEventListener('input', (e) => {

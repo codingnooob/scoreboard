@@ -35,6 +35,8 @@ body {
     padding: 25px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .player:hover {
@@ -52,6 +54,7 @@ body {
 .flag-selector-container {
     position: relative;
     margin-right: 15px;
+    z-index: 2; /* Ensure flag button is above player card */
 }
 
 .flag-button {
@@ -90,13 +93,15 @@ body {
     width: 200px;
     max-height: 300px;
     overflow-y: auto;
-    z-index: 2000;
+    z-index: 1000; /* Lower than container's z-index */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     pointer-events: auto;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     opacity: 1;
     transform: translateZ(0);
+    will-change: transform, opacity;
+    contain: layout paint;
 }
 
 .flag-dropdown.show {
