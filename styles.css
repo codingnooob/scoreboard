@@ -38,7 +38,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     /* Create a stacking context for the player */
-    isolation: isolate;
+    z-index: 1;
 }
 
 .player:hover {
@@ -59,8 +59,10 @@ body {
     position: relative;
     margin-right: 15px;
     display: inline-block;
-    /* Ensure the container creates a stacking context */
+    /* Create a new stacking context for the container */
     z-index: 1;
+    /* Ensure the container's stacking context is above player cards */
+    position: relative;
 }
 
 .flag-button {
@@ -107,8 +109,13 @@ body {
     transform: translateZ(0);
     will-change: transform, opacity;
     margin-top: 5px;
-    /* Prevent any potential clipping */
+    /* Ensure dropdown stays above all other elements */
     transform-style: preserve-3d;
+    /* Force hardware acceleration and ensure it stays on top */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* Ensure it's above all player cards */
+    z-index: 10000 !important;
 }
 
 .flag-dropdown.show {
